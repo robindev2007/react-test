@@ -1,25 +1,17 @@
 "use client";
 import FileDropzone from "@/components/FileDropzone";
 import Image from "next/image";
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import TShirtEditor from "./TShirtEditor";
 import domToImage from "dom-to-image";
 import { downloadFile } from "@/utils/downloadFile";
 import { FaDownload } from "react-icons/fa6";
 
 function TShirtDesigner() {
-  const [logoImageFile, setLogoImageFile] = useState<File>();
+  const [logoImage, setLogoImage] = useState("");
   const tShirtContainerRef = useRef<HTMLDivElement>(null);
 
   const [exporting, setExporting] = useState(false);
-
-  // Cleanup object URLs to prevent memory leaks
-  useEffect(() => {
-    return () => {
-      if (logoImageFile)
-        URL.revokeObjectURL(URL.createObjectURL(logoImageFile));
-    };
-  }, [logoImageFile]);
 
   const exportImage = async () => {
     if (!tShirtContainerRef.current) return alert("Container not found");
@@ -51,19 +43,14 @@ function TShirtDesigner() {
   return (
     <div className="flex flex-col gap-4 sm:flex-row">
       <div ref={tShirtContainerRef} className="shrink-0">
-        <TShirtEditor
-          tShirtImage="/t-shirt-1.png"
-          logoImage={
-            logoImageFile ? URL.createObjectURL(logoImageFile) : undefined
-          }
-        />
+        <TShirtEditor tShirtImage="/t-shirt-1.png" logoImage={logoImage} />
       </div>
 
       <div className="w-full max-w-[50%] space-y-5">
-        {logoImageFile && (
+        {logoImage && (
           <div className="w-fit bg-gray-600 p-3">
             <Image
-              src={URL.createObjectURL(logoImageFile)}
+              src={logoImage}
               height={800}
               width={800}
               alt="Uploaded Logo"
@@ -74,7 +61,7 @@ function TShirtDesigner() {
         <FileDropzone
           acceptedFiles={(files) =>
             files && files.length > 0
-              ? setLogoImageFile(files[0])
+              ? setLogoImage(URL.createObjectURL(files[0]))
               : alert("No file uploaded")
           }
           accept={{ "image/*": [] }}

@@ -20,7 +20,7 @@ function DataTable({ initialData }: { initialData: DataRes }) {
       setLoading(true);
 
       const resData = await getTableData({
-        searchQuery,
+        searchQuery: searchQueryDebounce,
         page: 1,
       });
 
