@@ -22,7 +22,8 @@ async function CustomTablePage() {
               <li className="text-sm font-medium">Tailwind CSS for styling</li>
               <li className="text-sm font-medium">
                 Next.js Server Action for api calling (Calling api from client
-                show <span className="text-red-400">CORS ERROR</span>)
+                show <span className="text-red-400">CORS ERROR</span> and the
+                extension also doesn&apos;t work )
               </li>
             </ul>
           </div>
